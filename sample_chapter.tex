@@ -1,0 +1,38 @@
+\documentclass[12pt]{memoir}
+\usepackage{ebgaramond}
+\usepackage{titlesec}
+\usepackage[object=vectorian]{pgfornament}
+
+\titleformat{\chapter}[display]
+  {\bfseries\Large}
+  {\filright\MakeUppercase{\chaptertitlename} \Huge\thechapter}
+  {1ex}
+  {\titlerule\vspace{1ex}\filleft}
+  [\vspace{1ex}\titlerule]
+
+  \newcommand{\chapterhead}[1]{ % THIS IS A SIMPLIFIED VERSION
+    \begin{center}
+      \clearforchapter % move to correct page
+      \thispagestyle{chapter} % set the page style
+      \insertchapterspace % Inserts space into LoF and LoT
+      %\chapterheadstart % \beforechapskip space before heading
+      \printchaptername\chapternamenum\printchapternum
+      \afterchapternum % \midchapskip space between number and title
+      \printchaptertitle{#1} % title
+      \afterchaptertitle} % \afterchapskip space after title
+    \end{center}
+
+\begin{document}
+
+\title{Sri Sai Satcharitra}
+%% \author{Author Name\\
+%%   \small{Class Number - Class Name}\\
+%%   \small{Your Educational Institution}\\
+%%   \small{\texttt{email@address.com}}
+%% }
+%\date{December 15, 2012}
+
+\maketitle
+\input{ch1}
+
+\end{document}
