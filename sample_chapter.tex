@@ -2,6 +2,9 @@
 \usepackage{ebgaramond}
 \usepackage{titlesec}
 \usepackage[object=vectorian]{pgfornament}
+\usepackage{eso-pic}
+\usepackage{calc}
+
 
 \titleformat{\chapter}[display]
   {\bfseries\Large}
@@ -22,24 +25,22 @@
       \afterchaptertitle} % \afterchapskip space after title
     \end{center}
 
-    \usepackage{eso-pic}
-    \usepackage{calc}
 
 \makeatletter
 \AddToShipoutPicture{%
-\begingroup
-\setlength{\@tempdima}{2mm}%
-\setlength{\@tempdimb}{\paperwidth-\@tempdima-2cm}%
-\setlength{\@tempdimc}{\paperheight-\@tempdima}%
-\put(\LenToUnit{\@tempdima},\LenToUnit{\@tempdimc}){%
-\pgfornament[anchor=north west,width=2cm]{63}}
-\put(\LenToUnit{\@tempdima},\LenToUnit{\@tempdima}){%
-\pgfornament[anchor=south west,width=2cm,symmetry=h]{63}}
-\put(\LenToUnit{\@tempdimb},\LenToUnit{\@tempdimc}){%
-\pgfornament[anchor=north east,width=2cm,symmetry=v]{63}}
-\put(\LenToUnit{\@tempdimb},\LenToUnit{\@tempdima}){%
-\pgfornament[anchor=south east,width=2cm,symmetry=c]{63}}
-\endgroup
+  \begingroup
+  \setlength{\@tempdima}{2mm}%
+  \setlength{\@tempdimb}{\paperwidth-\@tempdima-2cm}%
+  \setlength{\@tempdimc}{\paperheight-\@tempdima}%
+  \put(\LenToUnit{\@tempdima},\LenToUnit{\@tempdimc}){%
+    \pgfornament[anchor=north west,width=2cm]{63}}
+  \put(\LenToUnit{\@tempdima},\LenToUnit{\@tempdima}){%
+    \pgfornament[anchor=south west,width=2cm,symmetry=h]{63}}
+  \put(\LenToUnit{\@tempdimb},\LenToUnit{\@tempdimc}){%
+    \pgfornament[anchor=north east,width=2cm,symmetry=v]{63}}
+  \put(\LenToUnit{\@tempdimb},\LenToUnit{\@tempdima}){%
+    \pgfornament[anchor=south east,width=2cm,symmetry=c]{63}}
+  \endgroup
 }
 \makeatother
 
