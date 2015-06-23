@@ -62,21 +62,20 @@
   ([a-map leaf-op]
    (let [descendants (filter map? (:content a-map))
          txt-content (filter #(-> % map? not)
-                             (:content a-map))
-         descendant-paths
-         (if (empty? descendants)
-           [[(leaf-op a-map)]]
-           (reduce
-            concat
-            []
-            (map (fn [a-child]
-                   (let [all-paths (leaf-paths a-child)]
-                     (map
-                      (fn [a-path]
-                        (cons (:tag a-map) a-path))
-                      all-paths)))
-                 descendants)))]
-     (set descendant-paths))))
+                             (:content a-map))]
+
+     (if (empty? descendants)
+       [[(leaf-op a-map)]]
+       (reduce
+        concat
+        []
+        (map (fn [a-child]
+               (let [all-paths (leaf-paths a-child)]
+                 (map
+                  (fn [a-path]
+                    (cons (:tag a-map) a-path))
+                  all-paths)))
+             descendants))))))
 
 (defn produce-histogram
   [data-file]
@@ -85,7 +84,7 @@
                    read-string)
         chapter-paths  (map
                         (fn [[chapter body]]
-                          (-> body html->body-map leaf-paths))
+                          (-> body html->body-map leaf-paths set))
                         corpus)
 
         path-dfs
