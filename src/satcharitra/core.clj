@@ -40,15 +40,65 @@
         links-text)
        wrtr))))
 
-(defn process-chapter
-  [chapter-body]
-  ; selectors for portions.
-  )
+(defn html->body-map
+  [page-src]
+  (let [pg-html (->> page-src
+                     java.io.StringReader.
+                     html/html-resource
+                     (filter (fn [x] (:tag x)))
+                     first)]
+    (first
+     (filter
+      (fn [descendant]
+        (= (:tag descendant)
+           :body))
+      (:content pg-html)))))
 
-(defn process-dataset
+(defn leaf-paths
+  "Return a path from root to leaf"
+  ([a-map]
+   (leaf-paths a-map
+               :tag))
+  ([a-map leaf-op]
+   (let [descendants (filter map? (:content a-map))
+         txt-content (filter #(-> % map? not)
+                             (:content a-map))
+         descendant-paths
+         (if (empty? descendants)
+           [[(leaf-op a-map)]]
+           (reduce
+            concat
+            []
+            (map (fn [a-child]
+                   (let [all-paths (leaf-paths a-child)]
+                     (map
+                      (fn [a-path]
+                        (cons (:tag a-map) a-path))
+                      all-paths)))
+                 descendants)))]
+     (set descendant-paths))))
+
+(defn produce-histogram
   [data-file]
   (let [corpus (-> data-file
                    slurp
                    read-string)
-        test-chapter (get corpus "CHAPTER I")]
-    (process-chapter test-chapter)))
+        chapter-paths  (map
+                        (fn [[chapter body]]
+                          (-> body html->body-map leaf-paths))
+                        corpus)
+
+        path-dfs
+        (reduce
+         (fn [acc paths]
+           (let [path-freq (into
+                            {}
+                            (map
+                             (fn [path]
+                               [path 1])
+                             paths))]
+             (merge-with + acc path-freq)))
+         {}
+         chapter-paths)]
+    (sort-by second path-dfs)))
+
