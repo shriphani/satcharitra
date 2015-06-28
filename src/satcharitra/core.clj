@@ -173,6 +173,10 @@
    (fn [text]
      (str "\\section*{" text "}"))
 
+   [[:body] [:p nil] [:b nil] [:font {:color "#0000FF"}]]
+   (fn [text]
+     (str "\\section*{" text "}"))
+
    [[:body] [:p {:align "CENTER"}] [:b nil] [:i nil]]
    (fn [text] nil)
 
@@ -298,7 +302,7 @@
         data     (-> data-file slurp read-string)]
     (with-open [wrtr (io/writer out-book)]
       (doall
-       (doseq [chapter (take 10 chapters)]
+       (doseq [chapter chapters]
          (let [ch-text (->> chapter
                             (get data)
                             convert-chapter)
@@ -320,6 +324,26 @@
       \\restoregeometry
 "
                                                   )))
-                            ch-text)]
+                            ch-text)
+
+               ch-first-char
+               (last
+                (re-find #"restoregeometry\s+(.)" fixed-text))
+               _ (println (= ch-first-char "\\"))
+               fixed-first-char (if (not= ch-first-char "\\")
+                                  (string/replace fixed-text
+                                                  #"restoregeometry\s+(.)"
+                                                  (Matcher/quoteReplacement
+                                                   (str "restoregeometry"
+                                                        "\n"
+                                                        "\\lettrine{"
+                                                        ch-first-char
+                                                        "}")))
+                                  fixed-text)
+
+               fixed-apostrophes (string/replace fixed-first-char
+                                                 "’"
+                                                 "'")]
+
            (binding [*out* wrtr]
-             (println fixed-text))))))))
+             (println fixed-apostrophes))))))))
