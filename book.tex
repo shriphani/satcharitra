@@ -1,0 +1,49 @@
+\documentclass[12pt, a5paper]{memoir}
+
+\PassOptionsToPackage{hideerrors}{xcolor}
+
+\usepackage{ebgaramond}
+\usepackage{titlesec}
+\usepackage[object=vectorian]{pgfornament}
+\usepackage{eso-pic}
+\usepackage{calc}
+\usepackage{coloredlettrine}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{yfonts,color}
+
+\usepackage{setspace}
+%\singlespacing
+\linespread{1.75}
+
+\makeatletter
+\AddToShipoutPicture{%
+  \begingroup
+  \setlength{\@tempdima}{2mm}%
+  \setlength{\@tempdimb}{\paperwidth-\@tempdima-2cm}%
+  \setlength{\@tempdimc}{\paperheight-\@tempdima}%
+  \put(\LenToUnit{\@tempdima},\LenToUnit{\@tempdimc}){%
+    \pgfornament[anchor=north west,width=2cm]{63}}
+  \put(\LenToUnit{\@tempdima},\LenToUnit{\@tempdima}){%
+    \pgfornament[anchor=south west,width=2cm,symmetry=h]{63}}
+  \put(\LenToUnit{\@tempdimb},\LenToUnit{\@tempdimc}){%
+    \pgfornament[anchor=north east,width=2cm,symmetry=v]{63}}
+  \put(\LenToUnit{\@tempdimb},\LenToUnit{\@tempdima}){%
+    \pgfornament[anchor=south east,width=2cm,symmetry=c]{63}}
+  \endgroup
+}
+\makeatother
+
+\begin{document}
+
+\title{Sri Sai Satcharitra}
+%% \author{Author Name\\
+%%   \small{Class Number - Class Name}\\
+%%   \small{Your Educational Institution}\\
+%%   \small{\texttt{email@address.com}}
+%% }
+%\date{December 15, 2012}
+
+\maketitle
+\input{chs}
+
+\end{document}
